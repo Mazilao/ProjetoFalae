@@ -1,12 +1,15 @@
 package com.falae.service.dto;
 
 
-import java.util.List;
+import lombok.Data;
 
+import java.time.LocalDateTime;
+
+@Data
 public class OrderDTO {
 
     private Integer userId;
     private double totalPrice;
     private String status;
-    private List<Integer> productIds;
+    private LocalDateTime createdAt;
 }

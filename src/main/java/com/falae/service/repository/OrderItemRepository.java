@@ -1,0 +1,7 @@
+package com.falae.service.repository;
+
+import com.falae.model.OrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
+}

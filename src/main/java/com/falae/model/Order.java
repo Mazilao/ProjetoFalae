@@ -1,6 +1,7 @@
 package com.falae.model;
 
 
+import com.falae.service.dto.OrderDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -23,9 +25,11 @@ public class Order {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull
+    @JoinColumn(name = "users_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items;
 
     @NotNull
     private double totalPrice;
@@ -36,20 +40,11 @@ public class Order {
     @NotNull
     private LocalDateTime createdAt;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_product",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
-
-    public Order(User user, double totalPrice, String status, List<Product> products){
+    public Order(OrderDTO orderDTO, User user) {
         this.user = user;
-        this.totalPrice = totalPrice;
-        this.status = status;
-        this.createdAt = LocalDateTime.now();
-        this.products = products;
+        this.totalPrice = orderDTO.getTotalPrice();
+        this.status = orderDTO.getStatus();
+        this.createdAt = orderDTO.getCreatedAt() != null ? orderDTO.getCreatedAt() : LocalDateTime.now();
     }
 
 

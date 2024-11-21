@@ -2,6 +2,7 @@ package com.falae.model;
 
 import com.falae.service.dto.UserDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -20,6 +21,9 @@ public class User {
 
     @NotBlank
     private String name;
+
+    @Email
+    @NotBlank
     private String email;
     private String address;
     private String phone;
