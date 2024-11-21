@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity registerProduct(@RequestBody @Valid ProductDTO data){
+    public ResponseEntity createProduct(@RequestBody @Valid ProductDTO data){
         try {
             Product newProduct = new Product(data);
             productRepository.save(newProduct);

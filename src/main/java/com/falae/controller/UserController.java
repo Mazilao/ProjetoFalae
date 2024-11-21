@@ -10,20 +10,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/register")
+@RequestMapping("/api/auth")
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
+    @GetMapping("/users")
     public ResponseEntity getAllUsers(){
         var allUsers = userRepository.findAll();
         return ResponseEntity.ok(allUsers);
     }
 
-    @PostMapping
-    public ResponseEntity registerUser(@RequestBody UserDTO data){
+    @PostMapping("/register")
+    public ResponseEntity createUser(@RequestBody UserDTO data){
         try {
             User newUser = new User(data);
             userRepository.save(newUser);

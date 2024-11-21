@@ -8,7 +8,7 @@ import java.util.List;
 public class CreateOrderDTO {
 
     private  Integer userId;
-    private List<OrderItemDTO > items;
+    private List<OrderItemDTO > products;
 
     @Data
     public static class OrderItemDTO {

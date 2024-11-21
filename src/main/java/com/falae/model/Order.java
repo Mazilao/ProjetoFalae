@@ -29,7 +29,7 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> items;
+    private List<OrderItem> products;
 
     @NotNull
     private double totalPrice;

@@ -9,7 +9,9 @@ import com.falae.service.dto.OrderResponseDTO;
 import com.falae.service.repository.OrderRepository;
 import com.falae.service.repository.ProductRepository;
 import com.falae.service.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +33,14 @@ public class OrderController {
     private ProductRepository productRepository;
 
     @PostMapping
-    public ResponseEntity<Integer> createOrder(@RequestBody CreateOrderDTO createOrderDTO) {
+    public ResponseEntity<Integer> createOrder(@RequestBody @Valid CreateOrderDTO createOrderDTO) {
         User user = userRepository.findById(createOrderDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
 
         double totalPrice = 0.0;
-        List<OrderItem> orderItems = new ArrayList<>();
+        List<OrderItem> orderProducts = new ArrayList<>();
 
-        for (CreateOrderDTO.OrderItemDTO itemDTO : createOrderDTO.getItems()) {
+        for (CreateOrderDTO.OrderItemDTO itemDTO : createOrderDTO.getProducts()) {
             Product product = productRepository.findById(itemDTO.getProductId())
                     .orElseThrow(() -> new RuntimeException("Produto nao encontrado: " + itemDTO.getProductId()));
 
@@ -53,7 +55,7 @@ public class OrderController {
             orderItem.setProduct(product);
             orderItem.setQuantity(itemDTO.getQuantity());
             orderItem.setTotalPrice(itemTotal);
-            orderItems.add(orderItem);
+            orderProducts.add(orderItem);
         }
 
         Order order = new Order();
@@ -61,9 +63,9 @@ public class OrderController {
         order.setTotalPrice(totalPrice);
         order.setStatus("Pendente");
         order.setCreatedAt(LocalDateTime.now());
-        order.setItems(orderItems);
+        order.setProducts(orderProducts);
 
-        for (OrderItem item : orderItems) {
+        for (OrderItem item : orderProducts) {
             item.setOrder(order);
         }
         Order savedOrder = orderRepository.save(order);
@@ -82,7 +84,7 @@ public class OrderController {
         response.setStatus(order.getStatus());
         response.setCreatedAt(order.getCreatedAt());
 
-        List<OrderResponseDTO.ProductDTO> products = order.getItems().stream().map(item -> {
+        List<OrderResponseDTO.ProductDTO> products = order.getProducts().stream().map(item -> {
             OrderResponseDTO.ProductDTO productDTO = new OrderResponseDTO.ProductDTO();
             productDTO.setName(item.getProduct().getName());
             productDTO.setQuantity(item.getQuantity());
