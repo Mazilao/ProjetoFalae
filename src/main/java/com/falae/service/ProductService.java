@@ -1,6 +1,5 @@
 package com.falae.service;
 
-import com.falae.model.Product;
 import com.falae.service.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +9,11 @@ import java.util.Optional;
 @Service
 public class ProductService {
     @Autowired
-    static ProductRepository productRepository;
+    ProductRepository productRepository;
 
-    public static Optional<Product> getProduct(Integer id) {
-        return productRepository.findById(id);
-    }
+//    public static Optional<Product> getProduct(Integer id) {
+//        return productRepository.findById(id);
+//    }
 
 //    public SearchProductId searchProduct (Integer productId) {
 //        Product product = productRepository.findById(productId).orElseThrow(() ->
