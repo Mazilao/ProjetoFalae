@@ -1,5 +1,4 @@
-# API Spring Boot - [Nome do Projeto]
-
+# API Spring Boot
 ## Descrição
 Este projeto é uma API desenvolvida em Spring Boot.
 
